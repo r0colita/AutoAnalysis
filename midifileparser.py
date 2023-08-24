@@ -3,34 +3,62 @@ import pypianoroll
 import matplotlib.pyplot as plt
 
 # import midi file
-mid = MidiFile('./test midi files/prelude04.midi')
+mid = MidiFile('./test midi files/czerny_299_1.midi')
 msg = Message('note_on')
 
-def read_midi_file(file_path):
-    try:
-        midi_file = mid
-        return midi_file
-    except IOError as e:
-        print(f"Error reading MIDI file: {e}")
-        return None
+#print meta message
+# for message in mid:
+#     if message.is_meta:
+#         print(message)
 
-#Identify key of piece:)
+#Extract key signature from meta message
 key = ' '
 for i in mid:
     if i.is_meta and hasattr(i, "key"):
         key = i.key
-
 print(f'The file you\'ve uploaded is in the key of {key}.')
 
-#Chord class to identify individual chords
+# Chord class to identify individual chords
 class Chord:
-    def __init__(self, root_note, chord_type, duration):
+    def __init__(self, root_note, chord_type, start_time):
         self.root_note = root_note
-        self.chord_type = ['major', 'minor', 'diminished', 'dominant 7th', 'half-diminished']
-        self.duration = duration
+        self.chord_type = ['major', 'minor']
+        self.start_time = start_time
+
+    def set_duration(self, end_time):
+        self.duration = end_time - self.start_time
     
-#     def __str__(self) -> str:
-#         return f"Chord: {self.root_note} {self.chord_type}, Duration: {self.duration}"
+    def get_chord_type(self, intervals):
+        pass
+    
+    def __str__(self) -> str:
+        return f"Chord: {self.root_note} {self.chord_type}, Duration: {self.duration}"
+    
+# Find chords by time simultaneity and store them in a list
+chords= []
+current_chord = None
+accumulated_time = 0
+
+for msg in mid.tracks[1]:
+    accumulated_time += msg.time
+    if not msg.is_meta and hasattr(msg, 'note'):
+        if msg.type == 'note_on':
+            if current_chord:
+                # Finalize the previous chord
+                current_chord.set_duration(accumulated_time)
+                chords.append(current_chord)
+            current_chord = Chord([msg.note], msg.time, accumulated_time)
+        elif msg.type == 'note_off' and current_chord:
+            current_chord.notes.append(msg.note)
+ 
+# Finalize the last chord if it exists
+if current_chord:
+    current_chord.set_duration(accumulated_time)
+    chords.append(current_chord)
+
+# Print the detected chords
+for chord in chords:
+    print(chord)
         
 # # Converts midi note values to their corresponding note names
 # def midi_to_note_name(midi_note):
@@ -46,25 +74,9 @@ class Chord:
     
 #     return note_name
 
-# # prints all the note values of the messages that don't equal 0
-# for i, track in enumerate(mid.tracks):
-#     print('Track {}: {}'.format(i, track.name))
-#     for msg in track:
-#         if not msg.is_meta and hasattr(msg, 'note'):
-#             midi_note = msg.note
-#             note_name = midi_to_note_name(midi_note)
-#             print(f"MIDI Note: {midi_note}, Note Name: {note_name}")
 
-# class Chord:
-#     def __init__(self, root_note, chord_type, duration):
-#         self.root_note = root_note
-#         self.chord_type = chord_type
-#         self.duration = duration
-    
-#     def __str__(self) -> str:
-#         return f"Chord: {self.root_note} {self.chord_type}, Duration: {self.duration}"
 
 # print piano roll of file
-# multitrack = pypianoroll.read('./test midi files/sonate_01_(c)hisamori.midi')
+# multitrack = pypianoroll.read('./test midi files/czerny_299_1.midi')
 # multitrack.plot()
 # plt.show()
