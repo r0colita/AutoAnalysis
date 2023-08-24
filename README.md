@@ -8,6 +8,11 @@ An artificial intelligence music analysis tool that analyses music (rather than 
 
 ## Data considerations
 ### Convenience sample
-    A midi transcription of Czerny's Op. 299 "The School of Velocity" Nº 1.
+A midi transcription of Czerny's Op. 299 "The School of Velocity" Nº 1.
 
-###
+### Representative sample
+TBD (Review Crash Course: Statistics; Codecademy Fundamentals of AI and Machine Learning course)
+
+## Dependencies
+-Mido (for handling MIDI files)
+-Music21 (for studying large datasets of music)
