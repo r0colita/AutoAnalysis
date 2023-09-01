@@ -14,5 +14,5 @@ A midi transcription of Czerny's Op. 299 "The School of Velocity" Nº 1.
 TBD (Review Crash Course: Statistics; Codecademy Fundamentals of AI and Machine Learning course)
 
 ## Dependencies
--Mido (for handling MIDI files)
--Music21 (for studying large datasets of music)
+- Mido (for handling MIDI files)
+- Music21 (for studying large datasets of music)

@@ -1,15 +1,16 @@
 from mido import MidiFile, MetaMessage, Message
 import pypianoroll
 import matplotlib.pyplot as plt
+from music21 import *
 
 # import midi file
 mid = MidiFile('./test midi files/czerny_299_1.midi')
 msg = Message('note_on')
 
 #print meta message
-# for message in mid:
-#     if message.is_meta:
-#         print(message)
+for message in mid:
+    if message.is_meta:
+        print(message)
 
 #Extract key signature from meta message
 key = ' '
@@ -59,20 +60,6 @@ if current_chord:
 # Print the detected chords
 for chord in chords:
     print(chord)
-        
-# # Converts midi note values to their corresponding note names
-# def midi_to_note_name(midi_note):
-#     # Define the list of note names
-#     note_names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-    
-#     # Calculate the octave and note index
-#     octave = midi_note // 12 - 1
-#     note_index = midi_note % 12
-    
-#     # Construct the note name
-#     note_name = f"{note_names[note_index]}{octave}"
-    
-#     return note_name
 
 
 

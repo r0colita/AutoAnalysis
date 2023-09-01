@@ -3,21 +3,25 @@ import pypianoroll #to visualize midi files
 import matplotlib.pyplot as plt
 
 greeting = "Welcome to AutoAnalysis pre-alpha! Please upload a midi file to analyze."
-#print(greeting)
+print(greeting)
 
-#import midi fileg
-mid = MidiFile('./test midi files/sonate_01_(c)hisamori.midi')
-msg = Message('note_on')
+#import midi file
+mid = MidiFile('./test midi files/czerny_299_1.midi')
+sound = Message('note_on')
+rest = Message('note_off')
 parser = Parser()
 
-#print all midi messages in file
+#print all midi messages in file BEFORE graphing it out
 for i, track in enumerate(mid.tracks):
     print('Track {}: {}'.format(i, track.name))
-    for msg in track:
-        print(msg)
+    for sound in track:
+        print(sound)
+        print(rest)
+
 
 #print piano roll of file (visualize)
-multitrack = pypianoroll.read('./test midi files/sonate_01_(c)hisamori.midi')
-multitrack.plot()
-#plt.show()
+# print("Here is the piano roll of the midi file you uploaded:")
+# multitrack = pypianoroll.read('./test midi files/prelude04.midi')
+# multitrack.plot()
+# plt.show()
 
